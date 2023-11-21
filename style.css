@@ -119,6 +119,11 @@ nav > div {
 
 #totop {
     display: flex;
+    justify-content: center;
+}
+
+#totop > div {
+    display: flex;
     height: 28px;
     width: 28px;
     background-color: white;
@@ -130,7 +135,7 @@ nav > div {
     font-size: 16px;
 }
 
-#totop:hover {
+#totop > div:hover {
     cursor: pointer;
 }
 
@@ -193,8 +198,64 @@ aside {
 
 aside > div {
     margin-bottom: 5px;
-    padding: 20px;
+    padding: 8px;
     font-size: 18px;
-    color: black;
+    color: rgb(39, 39, 39);
     background-color: white;
+    display: flex;
+}
+
+aside > div:first-child {
+    padding: 20px;
+}
+
+aside img {
+    height: 8vw;
+    width: 8vw;
+}
+
+aside img:hover {
+    cursor: pointer;
+}
+
+.aside {
+    margin: 0px 10px;
+}
+
+.aside:hover {
+    cursor: pointer;
+}
+
+.asidetitle {
+    margin-bottom: 5px;
+}
+
+.asidetitle:hover {
+    text-decoration: underline;
+}
+
+.asidedate {
+    font-size: 12px;
+    font-weight: normal;
+    color: gray;
+    margin-bottom: 10px;
+}
+
+.asidetext {
+    font-size: 12px;
+    font-weight: normal;
+    color: rgb(73, 73, 73);
+}
+
+aside > div:last-child {
+    display: flex;
+    justify-content: right;
+    padding: 20px;
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+aside > div:last-child:hover {
+    cursor: pointer;
 }
