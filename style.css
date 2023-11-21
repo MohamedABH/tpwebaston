@@ -257,6 +257,6 @@ aside > div:last-child {
     font-size: 14px;
 }
 
-aside > div:last-child:hover {
+aside > div > span:hover {
     cursor: pointer;
 }
