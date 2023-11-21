@@ -1,0 +1,187 @@
+html, body, #main {
+    height: fit-content;
+}
+
+body {
+    margin: 0px;
+    height: 100%;
+    color: white;
+    font-family: arial;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+header {
+    position: fixed;
+    display: flex;
+    height: 70px;
+    width: 100%;
+    align-items: center;
+    background-color: #e60012;
+    justify-content: space-between;
+    z-index: 1;
+}
+
+#main {
+    display: flex;
+    flex-direction: row;
+}
+
+svg {
+    display: flex;
+    fill: white;
+}
+
+#logo {
+    margin: 0px 25px;
+    height: 24px;
+    width: auto;
+}
+
+#logo:hover {
+    cursor: pointer;
+}
+
+#headernav {
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
+}
+
+#headernav div {
+    display: flex;
+    width: 80px;
+    height: fit-content;
+    flex-direction: column;
+    align-items: center;
+}
+
+#headernav div:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#headernav div svg {
+    height: 28px;
+    width: auto;
+}
+
+nav {
+    position: fixed;
+    background-color: #bf0010;
+    height: 100%;
+    width: 88px;
+}
+
+nav > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.sidenav {
+    margin-top: 70px;
+}
+
+.sidenav > div, #etc {
+    padding: 0px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    background-color: #e60012;
+    margin-top: 1px;
+}
+
+.sidenav > div {
+    height: 88px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.sidenav svg {
+    height: 32px;
+    width: auto;
+}
+
+#etc {
+    height: 56px;
+    font-size: 28px;
+}
+
+.sidenav > div:hover, #etc:hover {
+    background-color: #d10000;
+    cursor: pointer;
+}
+
+#totop {
+    display: flex;
+    height: 28px;
+    width: 28px;
+    background-color: white;
+    border-radius: 0% 15% 15% 0%;
+    color: #e60012;
+    rotate: -90deg;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+#totop:hover {
+    cursor: pointer;
+}
+
+#mainscroll {
+    width: 100%;
+    height: fit-content;
+    overflow: scroll;
+    display: flex;
+    padding: 78px 5px 5px 93px;
+}
+
+.mygrid {
+    display: grid;
+    width: 70%;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(18, 160px);
+    gap: 4px;
+}
+
+.mygrid > div {
+    background-color: blue;
+    transition-duration: 400ms;
+    border-radius: 5px;
+    grid-row: span 2;
+    grid-column: span 2;
+}
+
+.mygrid > div:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 5px 10px 0px rgb(66, 66, 66);
+    cursor: pointer;
+} 
+
+.mygrid > div.row2 {
+    grid-row: span 4;
+}
+
+.mygrid > div.col2 {
+    grid-column: span 4;
+}
+
+.mygrid > div.rowb2 {
+    grid-row: span 1;
+}
+
+.mygrid > div.colhalf {
+    grid-column: span 3;
+}
+
+aside {
+    background-color: green;
+    width: 30%;
+    height: 100%;
+}
