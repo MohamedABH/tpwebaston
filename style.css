@@ -160,6 +160,7 @@ nav > div {
     grid-row: span 2;
     border-radius: 5px;
     grid-column: span 2;
+    background-color: #ff7f26;
 }
 
 .mygrid > div:hover {
@@ -185,7 +186,7 @@ nav > div {
 }
 
 .mygrid > div > img {
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 5px;
     height: 100%;
     width: 100%;
