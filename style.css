@@ -77,11 +77,11 @@ nav > div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     height: 100%;
 }
 
 .sidenav {
+    width: 87px;
     margin-top: 70px;
 }
 
@@ -135,6 +135,7 @@ nav > div {
 }
 
 #mainscroll {
+    background-color: #f4f4f4;
     width: 100%;
     height: fit-content;
     overflow: scroll;
@@ -144,17 +145,15 @@ nav > div {
 
 .mygrid {
     display: grid;
-    width: 70%;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(18, 160px);
+    grid-template-columns: repeat(6, 11vw);
+    grid-template-rows: repeat(18, 11vw);
     gap: 4px;
 }
 
 .mygrid > div {
-    background-color: blue;
     transition-duration: 400ms;
-    border-radius: 5px;
     grid-row: span 2;
+    border-radius: 5px;
     grid-column: span 2;
 }
 
@@ -180,8 +179,22 @@ nav > div {
     grid-column: span 3;
 }
 
-aside {
-    background-color: green;
-    width: 30%;
+.mygrid > div > img {
+    object-fit: cover;
+    border-radius: 5px;
     height: 100%;
+    width: 100%;
+}
+
+aside {
+    width: 100%;
+    margin-left: 5px;
+}
+
+aside > div {
+    margin-bottom: 5px;
+    padding: 20px;
+    font-size: 18px;
+    color: black;
+    background-color: white;
 }
