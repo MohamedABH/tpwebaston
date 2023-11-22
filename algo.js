@@ -367,7 +367,7 @@ console.log(enBinaire(1024));
 
 function changementBase(nombre, base) {
     let res = "";
-    let possibleDigits = "123456789abcdefghijklmnopqrstuvwxyz";
+    let possibleDigits = "0123456789abcdefghijklmnopqrstuvwxyz";
     for (let i = 0; nombre >= base**i; i++) {
         let digit = Math.floor(nombre/base**i)%base;
         res = possibleDigits.charAt(digit) + res;
