@@ -1,3 +1,5 @@
+let readlineSync = require("readline-sync");
+
 //Exo 1
 
 /**
@@ -284,21 +286,36 @@ console.log(vraiePyramide(10));
 
 //Exo 1
 
+/**
+ * renvoie les nombres de 0 à N, et remplaces les multiples de 3 pas FIZZ, les multiples de 5 pas BUZZ, les multiples de 15 par FIZZBUZZ
+ * @param {Number} number le nombre maximum
+ * @returns {String}
+ */
 function fizzbuzz(number) {
+
+    //Les règles spécifiées. Chaque message est supplanté par le message d'une règle qui la suit dans la liste
+    let regles = [[3,"FIZZ"],[5,"BUZZ"],[15,"FIZZBUZZ"]]
+
     let res = "";
+
+    //On parcours les nombres
     for (let i = 0; i <= number; i++) {
-        //Si est un multiple de 3 alors FIZZ
-        if (i%3 === 0) {
-            res += "FIZZ";
+        //Par défaut, le nombre doit être affiché
+        let localRes = i;
+
+        //On vérifie pour chaque règles
+        for (rule of regles) {
+
+            //Si le nombre est un multiple du nombre spécifié par la règle, affiché le message équivalent à la place
+            if (i%rule[0] === 0) localRes = rule[1];
+
         }
-        //Si est un multiple de 5 alors BUZZ
-        if (i%5 === 0) {
-            res += "BUZZ";
-        }
-        //Comme n'est pas un multiple de 5, vérifie si est un multiple de 3, sinon i
-        else if(i%3 !== 0) res += i;
-        res += "\n";
+
+        //On ajoute la valeur à aficher pour ce nombre à notre liste de résultats
+        res += localRes + "\n";
+
     }
+    
     return res;
 }
 
@@ -307,7 +324,10 @@ console.log(fizzbuzz(10));
 
 //Exo 2
 
-
+/**
+ * Un jeu où l'utilisateur dois deviné le nombre généré aléatoirement en 3 essaiss
+ * @param {Number} number La valeur maximale du nombre aléatoire
+ */
 function justePrix(number) {
 
     //Génère un nombre aléatoire entre 0 et number
@@ -350,6 +370,12 @@ function justePrix(number) {
 
 //Exo 3
 
+
+/**
+ * Renvoie l'équivalent binaire d'un nombre
+ * @param {Number} nombre 
+ * @returns {String}
+ */
 function enBinaire(nombre) {
     let res = "";
     //calcul le résultat chiffre par chiffre, en commançant par le plus petit
@@ -365,14 +391,241 @@ function enBinaire(nombre) {
 console.log(enBinaire(1024));
 
 
+/**
+ * Renvoie l'équivalent en base une autre base d'un nombre
+ * @param {Number} nombre Le nombre à transformer
+ * @param {Number} base La base en laquel le nombre doit être transformé. < 37
+ * @returns {String}
+ */
 function changementBase(nombre, base) {
     let res = "";
+    //Liste des chiffres
     let possibleDigits = "0123456789abcdefghijklmnopqrstuvwxyz";
+    if (base > possibleDigits.length) throw new Error("La base est trop grande, maximum " + possibleDigits.length);
+    //calcul le résultat chiffre par chiffre, en commançant par le plus petit
     for (let i = 0; nombre >= base**i; i++) {
+        //Obtient le chiffre à la position i du nombre
         let digit = Math.floor(nombre/base**i)%base;
+        //choisit le bon symbole pour le chiffre et l'ajoute au début du nombre
         res = possibleDigits.charAt(digit) + res;
     }
     return res;
 }
 
 console.log(changementBase(300,16));
+
+
+//Exo 4
+
+
+/**
+ * Renvoie l'équivalent en nombre romain d'un nombre
+ * @param {Number} nombre > 0, < 4889
+ * @returns {String}
+ */
+function enRomain(nombre) {
+
+    let res = "";
+
+    //Les valeurs de chaque symboles, ainsi que la valeur pouvant leur être soustraite selon la numéaration romaine 
+    baseRomaine = [[1000,100],[500,100],[100,10],[50,10],[10,1],[5,1]];
+
+    //Les symboles associés à leurs valeurs
+    const symbolesRomains = {
+        1000: "M",
+        500: "D",
+        100: "C",
+        50: "L",
+        10: "X",
+        5: "V",
+        1: "I"
+        }
+    
+    //On vérifie qu'il est possible d'écrire le nombre avec la numération romaine
+    if(nombre > 4888) throw new Error("Nombre trop grand, il doit être inférieur à 3889");
+    if(nombre < 1) throw new Error("Nombre trop petit, il doit être supérieur à 0")
+
+    //On parcours le nombre pour chaque symbole possible
+    for (base of baseRomaine) {
+        //On ajoute le nombre necessaire de symbole
+        res += symbolesRomains[base[0]].repeat(Math.floor(nombre/base[0]))
+        //On soustrait les valeurs déjà ajoutés au résultat
+        nombre -= (nombre - nombre%base[0])
+
+        //On vérifie si il y a un symbole soustrait à ajouter, auquel cas on l'ajoute au résultat et on soustrait sa valeur au nombre
+        if (nombre >= base[0]-base[1]) {
+            res += symbolesRomains[base[1]] + symbolesRomains[base[0]];
+            nombre -= (base[0]-base[1]);
+        }
+    }
+    
+    //Finalement on ajoute les dernier symboles
+    res += symbolesRomains[1].repeat(nombre);
+
+    return res;
+
+}
+
+console.log(enRomain(4888));
+
+
+//Exo Bowling
+
+/**
+ * Gère la saisie de l'utilisateur pour obtenir le nombre de quilles tombées
+ * @param {Number} nbLancer le numéro du lancer
+ * @param {Number} quilles le nombre de quilles restantes
+ * @param {Number} score le score avant le lancer
+ * @returns {Number} le nombre de quilles tombées lors de ce lancer
+ */
+function lancer(nbLancer, quilles, score) {
+
+    //Par défaut, considérer que l'utilisateur va rentrer une mauvaise saisie
+    let bonInput = false;
+    //Déclaration de la variable avant la saisie utilisateur
+    let nbTombees = 0;
+
+    //Tant que l'utilisateur ne rentre pas une saisie correct, continuer de lui demander
+    while (!bonInput) {
+        //L'utilisateur saisit le nombre de quilles qui ssont tombées lors de ce tour
+        nbTombees = readlineSync.question("Combien de quilles sont tombées ? ");
+        //Si le nombre de quilles tombées est supérieur au nombre de quilles restante, ou que le nombre de quilles tombées est négatif, alors la saisie est incorrect
+        if (quilles < nbTombees || nbTombees < 0) {
+            console.log("Impossible que ce nombre de quilles soit tombées, rentrez un nombre de quilles valide");
+        }
+        //Sinon, la saisie est bonne, nous pouvons sortir de la boucle
+        else bonInput = true;
+    }
+
+    return nbTombees;
+
+}
+
+function bonusSuivant(bonus, nbLancer) {
+
+    //Si il s'agit du 1er lancer, c'est un strike, on l'affiche et on modifie les bonus avant de sortir du tour
+    if (nbLancer === 0) {
+        console.log("Strike !!!");
+        bonus = [bonus[0]+1,bonus[1]+1];
+    }
+    //Sinon c'est un spare, on modifie le bonus en conséquence
+    else {
+        console.log("Spare !");
+        bonus = [bonus[0]+1,bonus[1]]
+    }
+
+    return bonus;
+}
+
+function tourBowling(maxLancer, bonus, score, tourbonus) {
+
+    let quilles = 10;
+
+    for (let nbLancer = 0; nbLancer < maxLancer; nbLancer++) {
+
+        console.log(`Score actuel : ${score}`);
+        console.log(`${nbLancer+1}e lancer !`);
+
+        //on lance la fonction qui demande le nombre de quilles tombées
+        nbTombees = lancer(nbLancer, quilles, score);
+
+        //On supprime les quilles tombées
+        quilles -= nbTombees;
+
+        //On ajoute le score multiplié par le bonus actuel
+        score += nbTombees*bonus[0];
+
+        //On prépare les bonus pour les lancer suivants
+        bonus = [bonus[1],1];
+
+        //Si il n'y a plus de quilles, alors le joueur a marqué un strike ou un spare
+        if(!tourbonus) {
+            if (quilles === 0) {
+                bonus = bonusSuivant(bonus,nbLancer);
+                nbLancer = maxLancer;
+                console.log(nbLancer < maxLancer);
+            }
+        }
+
+    }
+
+    return {
+        score,
+        bonus,
+    }
+}
+
+function bowling() {
+
+    let score = 0;
+
+    //Le bonus lors des 2 prochains lancers
+    let bonus = [1,1]
+
+    let quilles = 10;
+
+    for (let tour = 0; tour < 10; tour++) {
+
+        console.log("_____________________________")
+        console.log(`${tour+1}e tour !`);
+        
+        for (let nbLancer = 0; nbLancer < 2; nbLancer++) {
+
+            tourRes = tourBowling(2,bonus,score,false);
+
+            bonus = tourRes.bonus;
+            score = tourRes.score;
+
+            // console.log(`Score actuel : ${score}`);
+            // console.log(`${nbLancer+1}e lancer !`);
+
+            // //on lance la fonction qui demande le nombre de quilles tombées
+            // nbTombees = lancer(nbLancer, quilles, score);
+
+            // //On supprime les quilles tombées
+            // quilles -= nbTombees;
+
+            // //On ajoute le score multiplié par le bonus actuel
+            // score += nbTombees*bonus[0];
+
+            // //On prépare les bonus pour les lancer suivants
+            // bonus = [bonus[1],1];
+
+            // //Si il n'y a plus de quilles, alors le joueur a marqué un strike ou un spare
+            // if (quilles === 0) bonus = bonusSuivant(bonus,nbLancer);
+
+            // if (bonus[1] > 1) nbLancer = 2;
+
+            if (tour === 9 && nbLancer === 2) {
+                for (let i = 0; i < 2 && bonus[i] > 1; i++) {
+                    if (quilles === 0) {
+                        quilles = 10;
+                        if (i == 1) console.log("Strike !!!");
+                    }
+
+                    console.log(`Score actuel : ${score}`);
+                    console.log(`Lancer bonus !`);
+
+                    nbTombees = lancer(nbLancer, quilles, score);
+
+                    quilles -= nbTombees;
+
+                    score += nbTombees*bonus[i];
+
+                }
+            }
+        }
+
+        quilles = 10;
+        
+    }
+
+    console.log(`Score final : ${score}`);
+
+}
+
+bowling();
+
+
+//Exo tennis
+
