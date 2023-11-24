@@ -501,6 +501,13 @@ function lancer(nbLancer, quilles, score) {
 
 }
 
+
+/**
+ * Envoie un message correspondant au coup effectué et renvoie le bonus pour les tours suivants
+ * @param {Array} bonus Le bonus au moment au lancer
+ * @param {Number} nbLancer Le numéro du lancer
+ * @returns {Array} Le bonus après le lancer
+ */
 function bonusSuivant(bonus, nbLancer) {
 
     //Si il s'agit du 1er lancer, c'est un strike, on l'affiche et on modifie les bonus avant de sortir du tour
@@ -517,8 +524,18 @@ function bonusSuivant(bonus, nbLancer) {
     return bonus;
 }
 
-function tourBowling(maxLancer, bonus, score, tourbonus) {
 
+/**
+ * Réalise un tour de bowling
+ * @param {Array} bonus Le bonus au début du tour
+ * @param {Number} score Le score au début du tour
+ * @param {Boolean} tourbonus S'agit-il du tour bonus
+ * @returns {Object} Un object comprenant le score et le bonus à la fin du tour
+ */
+function tourBowling(bonus, score, tourbonus) {
+
+    //Par défaut, un tour comporte 2 lancers
+    let maxLancer = 2;
     let quilles = 10;
 
     for (let nbLancer = 0; nbLancer < maxLancer; nbLancer++) {
@@ -539,11 +556,18 @@ function tourBowling(maxLancer, bonus, score, tourbonus) {
         bonus = [bonus[1],1];
 
         //Si il n'y a plus de quilles, alors le joueur a marqué un strike ou un spare
-        if(!tourbonus) {
-            if (quilles === 0) {
+        if(quilles === 0) {
+            //Si il ne s'agit pas du tour bonus, alors le joueur obtient un bonus et le tour se termine
+            if (!tourbonus) {
                 bonus = bonusSuivant(bonus,nbLancer);
                 nbLancer = maxLancer;
-                console.log(nbLancer < maxLancer);
+            }
+            //Sinon, le joueur a le droit à un lancer bonus, et les quilles sont replacées
+            else {
+                if (maxLancer === 2) maxLancer = 3;
+                if (nbTombees === "10") console.log("Strike !!!");
+                else console.log("Spare !");
+                quilles = 10;
             }
         }
 
@@ -562,62 +586,18 @@ function bowling() {
     //Le bonus lors des 2 prochains lancers
     let bonus = [1,1]
 
-    let quilles = 10;
-
+    //10 tours sont effectués
     for (let tour = 0; tour < 10; tour++) {
 
         console.log("_____________________________")
         console.log(`${tour+1}e tour !`);
-        
-        for (let nbLancer = 0; nbLancer < 2; nbLancer++) {
 
-            tourRes = tourBowling(2,bonus,score,false);
+        //Le 10e tour est un tour bonus
+        let tourRes = tourBowling(bonus,score,tour===9);
 
-            bonus = tourRes.bonus;
-            score = tourRes.score;
+        bonus = tourRes.bonus;
+        score = tourRes.score;
 
-            // console.log(`Score actuel : ${score}`);
-            // console.log(`${nbLancer+1}e lancer !`);
-
-            // //on lance la fonction qui demande le nombre de quilles tombées
-            // nbTombees = lancer(nbLancer, quilles, score);
-
-            // //On supprime les quilles tombées
-            // quilles -= nbTombees;
-
-            // //On ajoute le score multiplié par le bonus actuel
-            // score += nbTombees*bonus[0];
-
-            // //On prépare les bonus pour les lancer suivants
-            // bonus = [bonus[1],1];
-
-            // //Si il n'y a plus de quilles, alors le joueur a marqué un strike ou un spare
-            // if (quilles === 0) bonus = bonusSuivant(bonus,nbLancer);
-
-            // if (bonus[1] > 1) nbLancer = 2;
-
-            if (tour === 9 && nbLancer === 2) {
-                for (let i = 0; i < 2 && bonus[i] > 1; i++) {
-                    if (quilles === 0) {
-                        quilles = 10;
-                        if (i == 1) console.log("Strike !!!");
-                    }
-
-                    console.log(`Score actuel : ${score}`);
-                    console.log(`Lancer bonus !`);
-
-                    nbTombees = lancer(nbLancer, quilles, score);
-
-                    quilles -= nbTombees;
-
-                    score += nbTombees*bonus[i];
-
-                }
-            }
-        }
-
-        quilles = 10;
-        
     }
 
     console.log(`Score final : ${score}`);
